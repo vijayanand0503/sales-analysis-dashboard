@@ -1,1 +1,248 @@
-
+{
+    "name": "sales-pipeline",
+    "properties": {
+        "activities": [
+            {
+                "name": "Copy data1",
+                "type": "Copy",
+                "dependsOn": [],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "source": {
+                        "type": "DelimitedTextSource",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageReadSettings",
+                            "recursive": true,
+                            "enablePartitionDiscovery": false
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextReadSettings"
+                        }
+                    },
+                    "sink": {
+                        "type": "DelimitedTextSink",
+                        "storeSettings": {
+                            "type": "AzureBlobStorageWriteSettings"
+                        },
+                        "formatSettings": {
+                            "type": "DelimitedTextWriteSettings",
+                            "quoteAllText": true,
+                            "fileExtension": ".txt"
+                        }
+                    },
+                    "enableStaging": false,
+                    "translator": {
+                        "type": "TabularTranslator",
+                        "mappings": [
+                            {
+                                "source": {
+                                    "name": "Sale_ID",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "Sale_ID",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Customer_ID",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "Customer_ID",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Customer_Name",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "Customer_Name",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Product_ID",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "Product_ID",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Product_Name",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "Product_Name",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Category",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "Category",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Region",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "Region",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Date",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "Date",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Sales",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "Sales",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                }
+                            },
+                            {
+                                "source": {
+                                    "name": "Cost",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                },
+                                "sink": {
+                                    "name": "Cost",
+                                    "type": "String",
+                                    "physicalType": "String"
+                                }
+                            }
+                        ],
+                        "typeConversion": true,
+                        "typeConversionSettings": {
+                            "allowDataTruncation": true,
+                            "treatBooleanAsNumber": false
+                        }
+                    }
+                },
+                "inputs": [
+                    {
+                        "referenceName": "DelimitedText1",
+                        "type": "DatasetReference"
+                    }
+                ],
+                "outputs": [
+                    {
+                        "referenceName": "DelimitedText2",
+                        "type": "DatasetReference"
+                    }
+                ]
+            },
+            {
+                "name": "Data flow1",
+                "type": "ExecuteDataFlow",
+                "dependsOn": [
+                    {
+                        "activity": "Copy data1",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "dataflow": {
+                        "referenceName": "dataflow1",
+                        "type": "DataFlowReference"
+                    },
+                    "compute": {
+                        "coreCount": 8,
+                        "computeType": "General"
+                    },
+                    "traceLevel": "Fine"
+                }
+            },
+            {
+                "name": "Notebook1",
+                "type": "DatabricksNotebook",
+                "dependsOn": [
+                    {
+                        "activity": "Data flow1",
+                        "dependencyConditions": [
+                            "Completed"
+                        ]
+                    }
+                ],
+                "policy": {
+                    "timeout": "0.12:00:00",
+                    "retry": 0,
+                    "retryIntervalInSeconds": 30,
+                    "secureOutput": false,
+                    "secureInput": false
+                },
+                "userProperties": [],
+                "typeProperties": {
+                    "notebookPath": "/Users/vijayanandjamalpur@outlook.com/New Notebook 2026-04-16 17:36:14"
+                },
+                "linkedServiceName": {
+                    "referenceName": "AzureDatabricks1",
+                    "type": "LinkedServiceReference"
+                }
+            }
+        ],
+        "annotations": [],
+        "lastPublishTime": "2026-04-16T09:17:34Z"
+    },
+    "type": "Microsoft.DataFactory/factories/pipelines"
+}
