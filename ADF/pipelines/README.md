@@ -2,15 +2,20 @@
 
 This folder contains Azure Data Factory pipeline JSON files used in the project.
 
-## Pipeline Details
+## 📌 Pipeline: sales-pipeline.json
 
-- **sales-pipeline.json**
-  - Orchestrates the complete data workflow
-  - Steps involved:
-    1. Copy data from source (CSV in Blob Storage)
-    2. Transform data using Data Flow
-    3. Process data using Databricks Notebook
+This pipeline orchestrates the complete end-to-end data workflow.
 
-## Purpose
+### 🔄 Workflow Steps
+1. **Copy Data**
+   - Ingests raw sales data from Azure Blob Storage (CSV)
 
-The pipeline automates the end-to-end data movement and transformation process, enabling data to be prepared for analysis in Power BI.
+2. **Data Flow**
+   - Cleans and transforms data (filtering, formatting, aggregation)
+
+3. **Databricks Notebook**
+   - Performs advanced processing using PySpark
+   - Stores processed data in Delta format
+
+### 🎯 Purpose
+This pipeline automates the data ingestion, transformation, and processing workflow, preparing data for visualization in Power BI.
